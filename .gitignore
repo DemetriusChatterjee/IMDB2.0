@@ -1,3 +1,5 @@
 ex_trailers/
 
 .DS_Store
+venv/ 
+
