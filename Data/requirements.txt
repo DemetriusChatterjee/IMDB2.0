@@ -1,6 +1,8 @@
 numpy==2.3.3
 pandas==2.3.3
 python-dateutil==2.9.0.post0
+pytube==15.0.0
 pytz==2025.2
 six==1.17.0
 tzdata==2025.2
+yt-dlp==2025.9.26
