@@ -1,42 +1,35 @@
 """
 Flask API for Movie Recommender Backend
-Integrates with ChromaDB vector database
+Integrates with the CLIP-based trailer vectorization system
 """
 
-from flask import Flask, jsonify, send_from_directory, request
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
-import chromadb
+import cv2
+import torch
+from transformers import CLIPProcessor, CLIPModel
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 import os
 import json
 
 app = Flask(__name__)
 CORS(app)
 
+# Load CLIP model
+print("Loading CLIP model...")
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+print("Model loaded successfully")
+
 # Configuration
-TRAILERS_DIR = "../../Data/trailers"
+TRAILERS_DIR = "trailers"
 THUMBNAILS_DIR = "thumbnails"
-DATABASE_PATH = "../../Data/trailer_db"
+DATA_DIR = "Data"
 
-# Initialize database and models
-print("Connecting to ChromaDB database...")
-try:
-    chroma_client = chromadb.PersistentClient(path=DATABASE_PATH)
-    nar_collection = chroma_client.get_collection("db_narrative")
-    vis_collection = chroma_client.get_collection("db_visuals")
-    aud_collection = chroma_client.get_collection("db_audio")
-    print(f"✓ Connected! Found {nar_collection.count()} movies in database")
-except Exception as e:
-    print(f"❌ Database connection failed: {e}")
-    nar_collection = None
-    vis_collection = None
-    aud_collection = None
-
-# Load text model for search queries
-print("Loading text model...")
-text_model = SentenceTransformer('all-MiniLM-L6-v2')
-print("✓ Models loaded successfully")
+# Cache for movie vectors
+movie_vectors = {}
+movies_database = []
 
 
 def vectorize_trailer(video_path):

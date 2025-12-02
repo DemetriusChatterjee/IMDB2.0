@@ -185,6 +185,16 @@
   gap: 0.75rem;
   margin-bottom: 0.75rem;
   flex-wrap: wrap;
+  line-height: 1.2;
+}
+
+.movie-year,
+.movie-rated,
+.movie-runtime {
+  display: flex;
+  align-items: center;
+  height: 20px;
+  font-size: 0.85rem;
 }
 
 .movie-year {
@@ -212,6 +222,12 @@
   font-weight: 600;
   color: var(--accent-blue);
   font-size: 0.9rem;
+}
+
+.movie-rating-section {
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .genre-pills {

@@ -75,10 +75,33 @@ def get_all_movies_from_db():
             title = metadata.get('title', 'Unknown')
             movie_data = movies_data.get(title, {})
 
-            # Generate a simulated IMDB rating (6.5 to 9.2 range for realistic variety)
+            # Generate simulated IMDB data for realistic variety
             import random
-            random.seed(hash(title) % 1000)  # Consistent rating per title
+            random.seed(hash(title) % 1000)  # Consistent data per title
+
+            # Realistic movie data generation
             imdb_rating = round(random.uniform(6.5, 9.2), 1)
+            year = random.choice([2020, 2021, 2022, 2023, 2024])
+            rated = random.choice(['PG', 'PG-13', 'R', 'G', 'NR'])
+            runtime = f"{random.randint(85, 180)} min"
+
+            # Sample genres based on common combinations
+            genre_options = [
+                ['Action', 'Adventure'], ['Drama'], ['Comedy'], ['Horror', 'Thriller'],
+                ['Sci-Fi', 'Action'], ['Romance', 'Drama'], ['Documentary'], ['Animation', 'Family'],
+                ['Crime', 'Drama'], ['Comedy', 'Romance'], ['Action', 'Thriller'], ['Fantasy', 'Adventure']
+            ]
+            genres = random.choice(genre_options)
+
+            # Sample directors and actors
+            directors = ['Christopher Nolan', 'Jordan Peele', 'Greta Gerwig', 'Denis Villeneuve', 'Chloe Zhao',
+                        'Ryan Coogler', 'Nia DaCosta', 'James Cameron', 'Martin Scorsese', 'Taika Waititi']
+            director = random.choice(directors)
+
+            actors = ['Ryan Gosling, Emma Stone', 'Michael B. Jordan, Lupita Nyong\'o', 'Timothée Chalamet, Zendaya',
+                     'Margot Robbie, Ryan Reynolds', 'Oscar Isaac, Jessica Chastain', 'John David Washington, Zendaya',
+                     'Florence Pugh, Adam Driver', 'LaKeith Stanfield, Tessa Thompson']
+            actor_list = random.choice(actors)
 
             movies.append({
                 'id': title,  # Use title as ID for simplicity
@@ -86,8 +109,14 @@ def get_all_movies_from_db():
                 'description': data['documents'][i][:200] + "..." if len(data['documents'][i]) > 200 else data['documents'][i],
                 'youtube_link': movie_data.get('youtube_link', ''),
                 'imdb_rating': imdb_rating,
-                'genres': [],  # Could be extracted from the narrative text
-                'year': None,   # Could be extracted from metadata if available
+                'year': year,
+                'rated': rated,
+                'runtime': runtime,
+                'genres': genres,
+                'director': director,
+                'actors': actor_list,
+                'language': 'English',
+                'country': 'USA',
                 'poster': None  # Could be added if available
             })
 

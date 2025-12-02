@@ -121,16 +121,17 @@ function MovieCard({ movie, isSelected = false, onSelect }) {
           {movie.runtime && movie.runtime !== 'N/A' && (
             <span className="movie-runtime">{movie.runtime}</span>
           )}
-          {(movie.imdb_rating || movie.imdbRating) && (movie.imdb_rating !== 'N/A' && movie.imdbRating !== 'N/A') && (
-            <div className="movie-rating">
-              <StarRating
-                rating={movie.imdb_rating || movie.imdbRating}
-                size={14}
-                showNumber={true}
-              />
-            </div>
-          )}
         </div>
+
+        {(movie.imdb_rating || movie.imdbRating) && (movie.imdb_rating !== 'N/A' && movie.imdbRating !== 'N/A') && (
+          <div className="movie-rating-section">
+            <StarRating
+              rating={movie.imdb_rating || movie.imdbRating}
+              size={14}
+              showNumber={true}
+            />
+          </div>
+        )}
 
         <div className="genre-pills">
           {movie.genres && movie.genres.map(genre => (
