@@ -189,14 +189,15 @@ function App() {
                       <span className="weight-icon"><BrainIcon size={20} /></span> Narrative ({Math.round(weights.narrative * 100)}%)
                       <input
                         type="range"
-                        min="0"
+                        min="0.01"
                         max="1"
-                        step="0.05"
+                        step="0.01"
                         value={weights.narrative}
                         onChange={(e) => {
                           const newValue = parseFloat(e.target.value)
                           const remaining = 1 - newValue
-                          const visualRatio = weights.visual / (weights.visual + weights.audio)
+                          const total = weights.visual + weights.audio
+                          const visualRatio = total > 0 ? weights.visual / total : 0.5
                           handleWeightChange({
                             narrative: newValue,
                             visual: remaining * visualRatio,
@@ -212,14 +213,15 @@ function App() {
                       <span className="weight-icon"><EyeIcon size={20} /></span> Visual ({Math.round(weights.visual * 100)}%)
                       <input
                         type="range"
-                        min="0"
+                        min="0.01"
                         max="1"
-                        step="0.05"
+                        step="0.01"
                         value={weights.visual}
                         onChange={(e) => {
                           const newValue = parseFloat(e.target.value)
                           const remaining = 1 - newValue
-                          const narrativeRatio = weights.narrative / (weights.narrative + weights.audio)
+                          const total = weights.narrative + weights.audio
+                          const narrativeRatio = total > 0 ? weights.narrative / total : 0.5
                           handleWeightChange({
                             visual: newValue,
                             narrative: remaining * narrativeRatio,
@@ -235,14 +237,15 @@ function App() {
                       <span className="weight-icon"><AudioIcon size={20} /></span> Audio ({Math.round(weights.audio * 100)}%)
                       <input
                         type="range"
-                        min="0"
+                        min="0.01"
                         max="1"
-                        step="0.05"
+                        step="0.01"
                         value={weights.audio}
                         onChange={(e) => {
                           const newValue = parseFloat(e.target.value)
                           const remaining = 1 - newValue
-                          const narrativeRatio = weights.narrative / (weights.narrative + weights.visual)
+                          const total = weights.narrative + weights.visual
+                          const narrativeRatio = total > 0 ? weights.narrative / total : 0.5
                           handleWeightChange({
                             audio: newValue,
                             narrative: remaining * narrativeRatio,

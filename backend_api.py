@@ -591,11 +591,21 @@ def get_similarity_scores():
             similarities['visual'] = similarities.get('visual', 0.5) or 0.5
             similarities['audio'] = similarities.get('audio', 0.5) or 0.5
 
+            # Ensure all weights have valid values and handle 0 properly
+            narrative_weight = float(weights.get('narrative', 0.4) if weights.get('narrative') is not None else 0.4)
+            visual_weight = float(weights.get('visual', 0.35) if weights.get('visual') is not None else 0.35)
+            audio_weight = float(weights.get('audio', 0.25) if weights.get('audio') is not None else 0.25)
+
+            # Ensure weights are between 0 and 1
+            narrative_weight = max(0, min(1, narrative_weight))
+            visual_weight = max(0, min(1, visual_weight))
+            audio_weight = max(0, min(1, audio_weight))
+
             # Calculate weighted similarity
             combined_similarity = (
-                float(similarities['narrative']) * float(weights['narrative']) +
-                float(similarities['visual']) * float(weights['visual']) +
-                float(similarities['audio']) * float(weights['audio'])
+                float(similarities['narrative']) * narrative_weight +
+                float(similarities['visual']) * visual_weight +
+                float(similarities['audio']) * audio_weight
             )
 
             similarity_scores.append({
@@ -606,10 +616,17 @@ def get_similarity_scores():
 
         # Sort by similarity
         similarity_scores.sort(key=lambda x: x['similarity'], reverse=True)
+
+        print(f"✓ Calculated similarities for {len(similarity_scores)} movies")
+        if similarity_scores:
+            print(f"✓ Top similarity: {similarity_scores[0]['similarity']:.3f} for {similarity_scores[0]['title']}")
+
         return jsonify(similarity_scores[:20])  # Return top 20
 
     except Exception as e:
         print(f"Error calculating similarities: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return jsonify([])
 
 
