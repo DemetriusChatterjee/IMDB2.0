@@ -106,7 +106,7 @@ def get_all_movies_from_db():
             movies.append({
                 'id': title,  # Use title as ID for simplicity
                 'title': title,
-                'description': data['documents'][i][:200] + "..." if len(data['documents'][i]) > 200 else data['documents'][i],
+                'description': data['documents'][i],
                 'youtube_link': movie_data.get('youtube_link', ''),
                 'imdb_rating': imdb_rating,
                 'year': year,
@@ -432,7 +432,7 @@ def get_recommendations(movie_title):
             recommendations.append({
                 'id': target_title,
                 'title': target_title,
-                'description': target_analysis[:200] + "..." if len(target_analysis) > 200 else target_analysis,
+                'description': target_analysis,
                 'youtube_link': movie_data.get('youtube_link', ''),
                 'similarity': float(combined_similarity),
                 'similarities': similarities,  # Individual feature similarities
@@ -641,7 +641,7 @@ def search_movies():
             search_results.append({
                 'id': title,
                 'title': title,
-                'description': results['documents'][0][i][:200] + "..." if len(results['documents'][0][i]) > 200 else results['documents'][0][i],
+                'description': results['documents'][0][i],
                 'youtube_link': movie_data.get('youtube_link', ''),
                 'relevance': 1 - results['distances'][0][i]  # Convert distance to relevance
             })

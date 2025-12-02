@@ -3,7 +3,7 @@ import SearchBar from "./components/SearchBar"
 import MovieList from "./components/MovieList"
 import MovieDisplay from "./components/MovieDisplay"
 import StarRating from "./components/StarRating"
-import { BrainIcon, EyeIcon, AudioIcon, GitHubIcon } from "./components/CustomIcons"
+import { BrainIcon, EyeIcon, AudioIcon, GitHubIcon, PopcornIcon } from "./components/CustomIcons"
 import "./styles/App.css"
 
 function App() {
@@ -126,8 +126,8 @@ function App() {
             <GitHubIcon size={24} />
           </a>
           <div className="popcorn-decorations">
-            <img src="/icons/popcorn.png" className="popcorn-left" alt="Popcorn" />
-            <img src="/icons/popcorn.png" className="popcorn-right" alt="Popcorn" />
+            <PopcornIcon className="popcorn-left" size={48} />
+            <PopcornIcon className="popcorn-right" size={48} />
           </div>
         </div>
       ) : (
@@ -196,7 +196,10 @@ function App() {
                         onChange={(e) => {
                           const newValue = parseFloat(e.target.value)
                           const remaining = 1 - newValue
-                          const visualRatio = weights.visual / (weights.visual + weights.audio)
+                          let visualRatio = 0.5
+                          if (weights.visual + weights.audio > 0) {
+                            visualRatio = weights.visual / (weights.visual + weights.audio)
+                          }
                           handleWeightChange({
                             narrative: newValue,
                             visual: remaining * visualRatio,
@@ -219,7 +222,10 @@ function App() {
                         onChange={(e) => {
                           const newValue = parseFloat(e.target.value)
                           const remaining = 1 - newValue
-                          const narrativeRatio = weights.narrative / (weights.narrative + weights.audio)
+                          let narrativeRatio = 0.5
+                          if (weights.narrative + weights.audio > 0) {
+                            narrativeRatio = weights.narrative / (weights.narrative + weights.audio)
+                          }
                           handleWeightChange({
                             visual: newValue,
                             narrative: remaining * narrativeRatio,
@@ -242,7 +248,10 @@ function App() {
                         onChange={(e) => {
                           const newValue = parseFloat(e.target.value)
                           const remaining = 1 - newValue
-                          const narrativeRatio = weights.narrative / (weights.narrative + weights.visual)
+                          let narrativeRatio = 0.5
+                          if (weights.narrative + weights.visual > 0) {
+                            narrativeRatio = weights.narrative / (weights.narrative + weights.visual)
+                          }
                           handleWeightChange({
                             audio: newValue,
                             narrative: remaining * narrativeRatio,
