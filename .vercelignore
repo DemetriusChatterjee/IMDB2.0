@@ -1,0 +1,12 @@
+node_modules
+.git
+*.pyc
+__pycache__
+.env
+.venv
+*.log
+.DS_Store
+ui_example
+initial.ipynb
+start.sh
+backend_requirements.txt

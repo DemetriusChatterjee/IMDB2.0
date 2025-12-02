@@ -1,0 +1,143 @@
+.movie-list {
+  margin-top: 2rem;
+}
+
+.movie-list-empty {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+.movie-list-empty h3 {
+  font-family: var(--font-display);
+  color: var(--accent-gold);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.movie-list-empty p {
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.movie-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.movie-list-header h3 {
+  font-family: var(--font-display);
+  color: var(--accent-gold);
+  font-size: 1.8rem;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.movie-list-header p {
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.settings-label {
+  font-family: var(--font-display);
+  color: var(--accent-gold);
+  font-size: 1.3rem;
+  margin: 1rem 0 0 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.movie-with-score {
+  position: relative;
+}
+
+.similarity-breakdown {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.component-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.component-score {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.component-score .score-bar-container {
+  position: relative;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  flex: 1;
+}
+
+.component-score.narrative .score-bar {
+  background: linear-gradient(135deg, #8b5cf6, #a855f7);
+}
+
+.component-score.visual .score-bar {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+.component-score.audio .score-bar {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.score-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  min-width: 5%;
+}
+
+.score-percentage {
+  font-family: var(--font-body);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  min-width: 35px;
+  text-align: right;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .movie-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .movie-grid {
+    grid-template-columns: 1fr;
+  }
+}
