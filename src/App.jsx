@@ -111,7 +111,7 @@ function App() {
 
           <main className="analysis-main">
             {/* Left Panel - Controls and Movie Preview */}
-            <div key="left-panel" className="left-panel">
+            <div className="left-panel">
               <div className="selected-movie-preview">
                 {selectedMovie && (
                   <div className="movie-preview-card">
@@ -255,7 +255,7 @@ function App() {
             </div>
 
             {/* Right Panel - Recommendations */}
-            <div key="right-panel" className="right-panel">
+            <div className="right-panel">
               <MovieList
                 movies={movies}
                 selectedMovie={selectedMovie}

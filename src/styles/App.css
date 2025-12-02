@@ -36,6 +36,9 @@
   top: 0;
   z-index: 100;
   animation: slideInFromTop 0.5s ease-out;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
 }
 
 .header-search {
@@ -48,8 +51,8 @@
 }
 
 .header-search .search-bar {
-  flex: 1;
-  max-width: 500px;
+  flex: 2;
+  max-width: 400px;
 }
 
 .analysis-main {
@@ -60,6 +63,7 @@
   margin: 0 auto;
   padding: 2rem;
   min-height: calc(100vh - 100px);
+  transition: none;
 }
 
 .left-panel {
@@ -67,6 +71,8 @@
   flex-direction: column;
   gap: 2rem;
   animation: slideInFromLeft 0.6s ease-out 0.2s both;
+  width: 400px;
+  min-height: 600px;
 }
 
 .right-panel {

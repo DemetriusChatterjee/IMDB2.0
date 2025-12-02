@@ -544,11 +544,16 @@ def get_similarity_scores():
             else:
                 similarities['audio'] = 0.5
 
+            # Ensure all similarities have valid values
+            similarities['narrative'] = similarities.get('narrative', 0.5) or 0.5
+            similarities['visual'] = similarities.get('visual', 0.5) or 0.5
+            similarities['audio'] = similarities.get('audio', 0.5) or 0.5
+
             # Calculate weighted similarity
             combined_similarity = (
-                similarities['narrative'] * weights['narrative'] +
-                similarities['visual'] * weights['visual'] +
-                similarities['audio'] * weights['audio']
+                float(similarities['narrative']) * float(weights['narrative']) +
+                float(similarities['visual']) * float(weights['visual']) +
+                float(similarities['audio']) * float(weights['audio'])
             )
 
             similarity_scores.append({
