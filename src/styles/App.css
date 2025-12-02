@@ -1,0 +1,233 @@
+.app {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+}
+
+.app-header {
+  text-align: center;
+  padding: 3rem 2rem 2rem;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, transparent 100%);
+}
+
+.app-header h1 {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 400;
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #ffd700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  font-family: var(--font-elegant);
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 300;
+}
+
+.app-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+
+.left-column {
+  min-height: 600px;
+}
+
+.right-column {
+  position: sticky;
+  top: 2rem;
+}
+
+.feature-preview {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.feature-preview h3 {
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+.feature-preview ul {
+  margin: 0 0 16px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.feature-preview li {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.feature-preview p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 1024px) {
+  .main-content {
+    grid-template-columns: 1fr 350px;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .right-column {
+    position: static;
+  }
+
+  .app-main {
+    padding: 0 1rem;
+  }
+}
+
+.selected-movie-section {
+  margin: 3rem 0 2rem;
+}
+
+.selected-movie-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.recommendations-section {
+  margin-top: 3rem;
+}
+
+.recommendations-section h2 {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.recommendations-subtitle {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--accent-blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1.5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 6rem 2rem;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.back-button,
+.details-button {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover,
+.details-button:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--accent-gold);
+}
+
+.details-button {
+  background: linear-gradient(135deg, var(--accent-gold), #ffd700);
+  color: var(--bg-primary);
+  border: none;
+  font-weight: 600;
+}
+
+.details-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px var(--glow);
+}
+
+@media (max-width: 768px) {
+  .app-header h1 {
+    font-size: 2rem;
+  }
+
+  .movie-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .app-main {
+    padding: 0 1rem;
+  }
+}

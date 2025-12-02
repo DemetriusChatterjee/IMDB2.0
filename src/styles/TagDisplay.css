@@ -1,0 +1,155 @@
+.tag-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tag {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  transform: translateX(4px);
+}
+
+.tag-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.tag-label {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text-primary);
+  z-index: 1;
+}
+
+.tag-strength-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05));
+  border-right: 2px solid;
+  transition: width 0.5s ease;
+  pointer-events: none;
+}
+
+/* Tag type colors */
+.tag-blue {
+  border-left: 3px solid var(--accent-blue);
+}
+
+.tag-blue .tag-icon {
+  color: var(--accent-blue);
+}
+
+.tag-blue .tag-strength-bar {
+  border-right-color: var(--accent-blue);
+}
+
+.tag-purple {
+  border-left: 3px solid var(--accent-purple);
+}
+
+.tag-purple .tag-icon {
+  color: var(--accent-purple);
+}
+
+.tag-purple .tag-strength-bar {
+  border-right-color: var(--accent-purple);
+}
+
+.tag-green {
+  border-left: 3px solid var(--accent-green);
+}
+
+.tag-green .tag-icon {
+  color: var(--accent-green);
+}
+
+.tag-green .tag-strength-bar {
+  border-right-color: var(--accent-green);
+}
+
+.tag-orange {
+  border-left: 3px solid var(--accent-orange);
+}
+
+.tag-orange .tag-icon {
+  color: var(--accent-orange);
+}
+
+.tag-orange .tag-strength-bar {
+  border-right-color: var(--accent-orange);
+}
+
+/* Tag strength variations */
+.tag-strong {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+}
+
+.tag-moderate {
+  opacity: 0.9;
+}
+
+.tag-weak {
+  opacity: 0.75;
+}
+
+.tag-weak .tag-label {
+  color: var(--text-secondary);
+}
+
+/* Animation on mount */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.tag {
+  animation: slideInRight 0.3s ease;
+}
+
+.tag:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.tag:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.tag:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.tag:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+@media (max-width: 768px) {
+  .tag {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+}
