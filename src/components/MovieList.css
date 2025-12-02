@@ -52,6 +52,16 @@
   font-size: 0.95rem;
 }
 
+.settings-label {
+  font-family: var(--font-display);
+  color: var(--accent-gold);
+  font-size: 1.3rem;
+  margin: 1rem 0 0 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
 
 .movie-grid {
   display: grid;
@@ -78,11 +88,18 @@
 }
 
 .component-score {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.component-score .score-bar-container {
   position: relative;
   height: 8px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   overflow: hidden;
+  flex: 1;
 }
 
 .component-score.narrative .score-bar {
@@ -102,6 +119,15 @@
   border-radius: 4px;
   transition: width 0.3s ease;
   min-width: 5%;
+}
+
+.score-percentage {
+  font-family: var(--font-body);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  min-width: 35px;
+  text-align: right;
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {

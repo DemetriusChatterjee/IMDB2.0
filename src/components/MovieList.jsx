@@ -66,6 +66,7 @@ function MovieList({ movies, selectedMovie, weights, onMovieSelect }) {
       <div className="movie-list-header">
         <h3>Movies Similar to "{selectedMovie.title}"</h3>
         <p>Similarity scores based on your AI weight settings</p>
+        <h4 className="settings-label">Settings</h4>
       </div>
 
 
@@ -81,22 +82,31 @@ function MovieList({ movies, selectedMovie, weights, onMovieSelect }) {
             <div className="similarity-breakdown">
               <div className="component-scores">
                 <div className="component-score narrative">
-                  <div
-                    className="score-bar"
-                    style={{ width: `${Math.max(movie.similarities.narrative * 100, 5)}%` }}
-                  ></div>
+                  <div className="score-bar-container">
+                    <div
+                      className="score-bar"
+                      style={{ width: `${Math.max(movie.similarities.narrative * 100, 5)}%` }}
+                    ></div>
+                  </div>
+                  <span className="score-percentage">{Math.round(movie.similarities.narrative * 100)}%</span>
                 </div>
                 <div className="component-score visual">
-                  <div
-                    className="score-bar"
-                    style={{ width: `${Math.max(movie.similarities.visual * 100, 5)}%` }}
-                  ></div>
+                  <div className="score-bar-container">
+                    <div
+                      className="score-bar"
+                      style={{ width: `${Math.max(movie.similarities.visual * 100, 5)}%` }}
+                    ></div>
+                  </div>
+                  <span className="score-percentage">{Math.round(movie.similarities.visual * 100)}%</span>
                 </div>
                 <div className="component-score audio">
-                  <div
-                    className="score-bar"
-                    style={{ width: `${Math.max(movie.similarities.audio * 100, 5)}%` }}
-                  ></div>
+                  <div className="score-bar-container">
+                    <div
+                      className="score-bar"
+                      style={{ width: `${Math.max(movie.similarities.audio * 100, 5)}%` }}
+                    ></div>
+                  </div>
+                  <span className="score-percentage">{Math.round(movie.similarities.audio * 100)}%</span>
                 </div>
               </div>
             </div>

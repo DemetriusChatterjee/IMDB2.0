@@ -102,10 +102,7 @@ function App() {
         <div key="analysis-stage" className="analysis-stage">
           <header className="analysis-header">
             <div className="header-search">
-              <SearchBar movies={movies} onMovieSelect={handleMovieSelect} />
-              <button className="back-button" onClick={handleBackToSearch}>
-                ← Back to Search
-              </button>
+              <SearchBar movies={movies} onMovieSelect={handleMovieSelect} onReset={handleBackToSearch} />
             </div>
           </header>
 
@@ -145,7 +142,7 @@ function App() {
               <div className="weight-controls-section">
                 <h3>AI Analysis Weights</h3>
                 <div className="weight-sliders">
-                  <div className="weight-slider">
+                  <div className="weight-slider narrative">
                     <label>
                       <span className="weight-icon"><BrainIcon size={20} /></span> Narrative ({Math.round(weights.narrative * 100)}%)
                       <input
@@ -168,7 +165,7 @@ function App() {
                     </label>
                   </div>
 
-                  <div className="weight-slider">
+                  <div className="weight-slider visual">
                     <label>
                       <span className="weight-icon"><EyeIcon size={20} /></span> Visual ({Math.round(weights.visual * 100)}%)
                       <input
@@ -191,7 +188,7 @@ function App() {
                     </label>
                   </div>
 
-                  <div className="weight-slider">
+                  <div className="weight-slider audio">
                     <label>
                       <span className="weight-icon"><AudioIcon size={20} /></span> Audio ({Math.round(weights.audio * 100)}%)
                       <input

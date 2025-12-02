@@ -445,8 +445,15 @@ def get_movie_analysis(movie_title):
         visual_content = source_vis['documents'][0] if source_vis and source_vis.get('documents') else None
         audio_content = source_aud['documents'][0] if source_aud and source_aud.get('documents') else None
 
+        # Parse the Gemini narrative analysis to extract structured sections
+        parsed_narrative = parse_gemini_analysis(narrative_content) if narrative_content else {}
+
         analysis = {
             'title': movie_title,
+            'visual_style': ' '.join([item.get('value', '') for item in parsed_narrative.get('visual_style', [])]),
+            'narrative_arc': ' '.join([item.get('value', '') for item in parsed_narrative.get('narrative_arc', [])]),
+            'audio_landscape': ' '.join([item.get('value', '') for item in parsed_narrative.get('audio_landscape', [])]),
+            'emotional_vibe': ' '.join([item.get('value', '') for item in parsed_narrative.get('emotional_vibe', [])]),
             'narrative': {
                 'available': True,
                 'content': narrative_content,

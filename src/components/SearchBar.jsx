@@ -3,7 +3,7 @@ import Fuse from 'fuse.js'
 import { SearchIcon, CloseIcon } from './CustomIcons'
 import '../styles/SearchBar.css'
 
-function SearchBar({ movies, onMovieSelect }) {
+function SearchBar({ movies, onMovieSelect, onReset }) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
   const [isOpen, setIsOpen] = useState(false)
@@ -121,6 +121,9 @@ function SearchBar({ movies, onMovieSelect }) {
     setResults([])
     setIsOpen(false)
     inputRef.current?.focus()
+    if (onReset) {
+      onReset()
+    }
   }
 
   const highlightMatch = (text, query) => {
