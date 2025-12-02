@@ -1,10 +1,15 @@
 #!/bin/bash
 
 echo "🚀 Fast-start deployment for Cool Movie Vectors"
-echo "Assumes project is already built locally and rsynced to server"
+echo "Assumes project is already built locally and rsynced to current directory"
 
 # Exit on any error
 set -e
+
+# Get current directory as project directory
+PROJECT_DIR=$(pwd)
+
+echo "📂 Working in: $PROJECT_DIR"
 
 # Update system packages
 echo "📦 Updating system packages..."
@@ -14,15 +19,11 @@ apt update && apt upgrade -y
 echo "🔧 Installing required packages..."
 apt install -y python3 python3-venv python3-pip nginx certbot python3-certbot-nginx ufw
 
-# Set project directory
-PROJECT_DIR="/var/www/movie-recommender"
-
 # Verify project files exist
-echo "📂 Checking project directory..."
-if [ ! -d "$PROJECT_DIR" ] || [ ! -f "$PROJECT_DIR/backend_api.py" ]; then
-    echo "❌ Error: Project not found at $PROJECT_DIR"
-    echo "Please rsync your project first:"
-    echo "rsync -avz -e \"ssh -i ~/.ssh/id_ed25519\" ~/code/classes/CS463/IMDB2.0/ root@138.68.231.163:/var/www/movie-recommender/"
+echo "🔍 Verifying project files..."
+if [ ! -f "$PROJECT_DIR/backend_api.py" ] || [ ! -f "$PROJECT_DIR/fast-start.sh" ]; then
+    echo "❌ Error: Required files not found in $PROJECT_DIR"
+    echo "Make sure you rsynced the project and are running from the project directory"
     exit 1
 fi
 
@@ -32,15 +33,28 @@ chown -R www-data:www-data $PROJECT_DIR
 
 # Set up Python virtual environment
 echo "🐍 Setting up Python environment..."
-cd $PROJECT_DIR
 if [ ! -d "venv" ]; then
     python3 -m venv venv
 fi
 
-# Activate virtual environment and install dependencies
+# Activate virtual environment and install dependencies with CPU-only PyTorch
+echo "📦 Installing Python dependencies..."
 source venv/bin/activate
 pip install --upgrade pip
-pip install -r requirements.txt
+
+# Install regular packages first
+echo "📦 Installing core packages..."
+pip install --no-cache-dir flask flask-cors chromadb sentence-transformers scikit-learn pandas
+
+# Install PyTorch CPU-only version separately
+echo "🧠 Installing PyTorch (CPU-only version)..."
+pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
+# Install any remaining requirements
+if [ -f "requirements.txt" ]; then
+    echo "📋 Installing remaining requirements..."
+    pip install --no-cache-dir -r requirements.txt || echo "⚠️ Some requirements may have failed, continuing..."
+fi
 
 # Configure firewall
 echo "🔒 Configuring firewall..."
@@ -50,7 +64,7 @@ ufw --force enable
 
 # Create nginx configuration
 echo "⚙️ Setting up Nginx configuration..."
-cat > /etc/nginx/sites-available/movie-recommender << 'EOF'
+cat > /etc/nginx/sites-available/movie-recommender << EOF
 server {
     listen 80;
     server_name coolmovievectors.com www.coolmovievectors.com;
@@ -64,11 +78,11 @@ server {
 
     # Serve static files
     location / {
-        root /var/www/movie-recommender/dist;
-        try_files $uri $uri/ /index.html;
+        root $PROJECT_DIR/dist;
+        try_files \$uri \$uri/ /index.html;
 
         # Cache static assets
-        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)\$ {
             expires 1y;
             add_header Cache-Control "public, immutable";
         }
@@ -77,10 +91,10 @@ server {
     # API proxy
     location /api/ {
         proxy_pass http://127.0.0.1:5000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
         proxy_read_timeout 300;
         proxy_connect_timeout 300;
         proxy_send_timeout 300;
