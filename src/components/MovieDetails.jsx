@@ -108,19 +108,45 @@ function MovieDetails({ movie, onGetRecommendations, onBack, weights }) {
                   </div>
                 </div>
 
-                {analysis.narrative.features.length > 0 ? (
+{analysis.narrative.features.length > 0 ? (
                   <div className="detected-features">
-                    <p><strong>Detected themes:</strong></p>
-                    <div className="feature-tags">
-                      {analysis.narrative.features.map((feature, index) => (
-                        <span key={index} className="feature-tag theme-tag">
-                          {feature.value}
-                        </span>
-                      ))}
+                    <div className="analysis-content">
+                      <p><strong>🧠 Gemini AI analyzed this trailer:</strong></p>
+
+                      <div className="analysis-sections">
+                        {/* Group features by type */}
+                        {['visual style', 'narrative arc', 'audio landscape', 'emotional vibe'].map(type => {
+                          const typeFeatures = analysis.narrative.features.filter(f => f.type === type)
+                          if (typeFeatures.length === 0) return null
+
+                          const typeIcons = {
+                            'visual style': '🎨',
+                            'narrative arc': '📚',
+                            'audio landscape': '🎵',
+                            'emotional vibe': '💭'
+                          }
+
+                          return (
+                            <div key={type} className="analysis-section">
+                              <h5>{typeIcons[type]} {type.charAt(0).toUpperCase() + type.slice(1)}</h5>
+                              <div className="feature-pills">
+                                {typeFeatures.slice(0, 3).map((feature, index) => ( // Limit to 3 per section
+                                  <span key={index} className={`feature-pill ${type.replace(' ', '-')}`}>
+                                    {feature.value}
+                                  </span>
+                                ))}
+                                {typeFeatures.length > 3 && (
+                                  <span className="feature-pill-more">+{typeFeatures.length - 3} more</span>
+                                )}
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
                     </div>
                   </div>
                 ) : (
-                  <p className="no-features">No specific narrative themes detected</p>
+                  <p className="no-features">No narrative analysis available</p>
                 )}
               </div>
 
@@ -134,24 +160,24 @@ function MovieDetails({ movie, onGetRecommendations, onBack, weights }) {
                   </div>
                 </div>
 
-                {analysis.visual.available ? (
-                  analysis.visual.features.length > 0 ? (
-                    <div className="detected-features">
-                      <p><strong>Visual style detected:</strong></p>
-                      <div className="feature-tags">
-                        {analysis.visual.features.map((feature, index) => (
-                          <span
-                            key={index}
-                            className={`feature-tag ${feature.type === 'color' ? 'color-tag' : 'lighting-tag'}`}
-                          >
-                            {feature.value}
-                          </span>
-                        ))}
+{analysis.visual.available ? (
+                  <div className="detected-features">
+                    <p><strong>👁️ CLIP + Computer Vision extracted:</strong></p>
+                    <div className="technical-features">
+                      <div className="tech-feature">
+                        <span className="tech-label">CLIP Embeddings:</span>
+                        <span className="tech-value">512 semantic visual features</span>
+                      </div>
+                      <div className="tech-feature">
+                        <span className="tech-label">Color Histograms:</span>
+                        <span className="tech-value">RGB channel analysis (96 features)</span>
+                      </div>
+                      <div className="tech-feature">
+                        <span className="tech-label">Frame Analysis:</span>
+                        <span className="tech-value">Sampled at 1 FPS for full trailer</span>
                       </div>
                     </div>
-                  ) : (
-                    <p className="no-features">Visual analysis available but no specific features detected</p>
-                  )
+                  </div>
                 ) : (
                   <p className="not-available">Visual analysis not available for this movie</p>
                 )}
@@ -167,21 +193,24 @@ function MovieDetails({ movie, onGetRecommendations, onBack, weights }) {
                   </div>
                 </div>
 
-                {analysis.audio.available ? (
-                  analysis.audio.features.length > 0 ? (
-                    <div className="detected-features">
-                      <p><strong>Audio style detected:</strong></p>
-                      <div className="feature-tags">
-                        {analysis.audio.features.map((feature, index) => (
-                          <span key={index} className="feature-tag music-tag">
-                            {feature.value}
-                          </span>
-                        ))}
+{analysis.audio.available ? (
+                  <div className="detected-features">
+                    <p><strong>🎵 Librosa Audio Analysis extracted:</strong></p>
+                    <div className="technical-features">
+                      <div className="tech-feature">
+                        <span className="tech-label">Tempo Detection:</span>
+                        <span className="tech-value">BPM analysis using onset detection</span>
+                      </div>
+                      <div className="tech-feature">
+                        <span className="tech-label">Spectral Contrast:</span>
+                        <span className="tech-value">7 frequency band contrasts</span>
+                      </div>
+                      <div className="tech-feature">
+                        <span className="tech-label">Audio Processing:</span>
+                        <span className="tech-value">Full trailer audio analysis</span>
                       </div>
                     </div>
-                  ) : (
-                    <p className="no-features">Audio analysis available but no specific features detected</p>
-                  )
+                  </div>
                 ) : (
                   <p className="not-available">Audio analysis not available for this movie</p>
                 )}

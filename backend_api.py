@@ -138,6 +138,62 @@ def generate_tags_from_analysis(source_analysis, target_analysis, similarity_sco
     return tags[:3]  # Return top 3 tags
 
 
+def parse_gemini_analysis(analysis_text):
+    """
+    Parse the structured Gemini analysis to extract specific features
+    """
+    if not analysis_text:
+        return {}
+
+    features = {
+        'visual_style': [],
+        'narrative_arc': [],
+        'audio_landscape': [],
+        'emotional_vibe': []
+    }
+
+    # Parse the structured sections
+    sections = {
+        '[VISUAL_STYLE]': 'visual_style',
+        '[NARRATIVE_ARC]': 'narrative_arc',
+        '[AUDIO_LANDSCAPE]': 'audio_landscape',
+        '[EMOTIONAL_VIBE]': 'emotional_vibe'
+    }
+
+    for section_marker, key in sections.items():
+        if section_marker in analysis_text:
+            # Find the section content
+            start_idx = analysis_text.find(section_marker) + len(section_marker)
+            end_idx = analysis_text.find('[', start_idx)
+            if end_idx == -1:
+                end_idx = len(analysis_text)
+
+            section_content = analysis_text[start_idx:end_idx].strip()
+            if section_content.startswith(':'):
+                section_content = section_content[1:].strip()
+
+            # Split by common delimiters and clean up
+            items = []
+            for delimiter in [',', ';']:
+                if delimiter in section_content:
+                    items = [item.strip() for item in section_content.split(delimiter)]
+                    break
+
+            if not items and section_content:
+                items = [section_content]
+
+            # Clean and filter items
+            for item in items:
+                if item and len(item.strip()) > 3:  # Filter out very short items
+                    clean_item = item.strip().rstrip('.')
+                    if clean_item:
+                        features[key].append({
+                            'type': key.replace('_', ' '),
+                            'value': clean_item
+                        })
+
+    return features
+
 def parse_analysis_features(analysis_text, analysis_type):
     """
     Parse AI analysis text to extract specific features
@@ -145,67 +201,23 @@ def parse_analysis_features(analysis_text, analysis_type):
     if not analysis_text:
         return []
 
-    features = []
-    text = analysis_text.lower()
-
     if analysis_type == 'narrative':
-        # Extract narrative themes
-        themes = []
-        if 'action' in text: themes.append('Action sequences')
-        if 'romance' in text or 'love' in text: themes.append('Romantic themes')
-        if 'comedy' in text or 'humor' in text: themes.append('Comedy elements')
-        if 'drama' in text: themes.append('Dramatic tension')
-        if 'horror' in text or 'scary' in text: themes.append('Horror elements')
-        if 'mystery' in text or 'suspense' in text: themes.append('Mystery/Suspense')
-        if 'family' in text: themes.append('Family themes')
-        if 'war' in text or 'military' in text: themes.append('War/Military')
-        if 'crime' in text: themes.append('Crime elements')
-        if 'adventure' in text: themes.append('Adventure')
-
-        for theme in themes:
-            features.append({'type': 'theme', 'value': theme})
+        # For narrative, parse the Gemini structured analysis
+        parsed = parse_gemini_analysis(analysis_text)
+        features = []
+        for category, items in parsed.items():
+            features.extend(items)
+        return features
 
     elif analysis_type == 'visual':
-        # Extract visual features
-        colors = []
-        if 'dark' in text or 'black' in text: colors.append('Dark tones')
-        if 'bright' in text or 'vibrant' in text: colors.append('Bright colors')
-        if 'blue' in text: colors.append('Blue palette')
-        if 'red' in text: colors.append('Red tones')
-        if 'green' in text: colors.append('Green hues')
-        if 'golden' in text or 'yellow' in text: colors.append('Golden/Yellow')
-        if 'colorful' in text: colors.append('Colorful')
-        if 'monochrome' in text or 'black and white' in text: colors.append('Monochrome')
-
-        lighting = []
-        if 'low-key' in text or 'dim' in text: lighting.append('Low-key lighting')
-        if 'natural' in text: lighting.append('Natural lighting')
-        if 'atmospheric' in text: lighting.append('Atmospheric lighting')
-        if 'high-contrast' in text: lighting.append('High contrast')
-        if 'soft' in text: lighting.append('Soft lighting')
-
-        for color in colors:
-            features.append({'type': 'color', 'value': color})
-        for light in lighting:
-            features.append({'type': 'lighting', 'value': light})
+        # For visual analysis, we don't have detailed text usually, so return generic info
+        return [{'type': 'feature', 'value': 'CLIP visual embeddings + Color histograms'}]
 
     elif analysis_type == 'audio':
-        # Extract audio features
-        music_styles = []
-        if 'orchestral' in text: music_styles.append('Orchestral score')
-        if 'electronic' in text: music_styles.append('Electronic music')
-        if 'rock' in text: music_styles.append('Rock soundtrack')
-        if 'classical' in text: music_styles.append('Classical music')
-        if 'intense' in text: music_styles.append('Intense audio')
-        if 'ambient' in text: music_styles.append('Ambient sounds')
-        if 'dramatic' in text: music_styles.append('Dramatic score')
-        if 'upbeat' in text: music_styles.append('Upbeat music')
-        if 'somber' in text or 'sad' in text: music_styles.append('Somber tone')
+        # For audio analysis, we don't have detailed text usually, so return generic info
+        return [{'type': 'feature', 'value': 'Tempo detection + Spectral contrast analysis'}]
 
-        for style in music_styles:
-            features.append({'type': 'music', 'value': style})
-
-    return features
+    return []
 
 
 def generate_multimodal_tags(similarities, weights):

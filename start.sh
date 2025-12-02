@@ -9,8 +9,10 @@ cd "$(dirname "$0")"
 echo "Starting backend…"
 # Optional: use venv if it exists
 if [ -d "venv" ]; then
-    source venv/bin/activate
+    source Data/venv/bin/activate
+    echo "used Data venv"
 fi
+
 python3 backend_api.py &
 BACKEND_PID=$!
 

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Fuse from 'fuse.js'
-import { Search, X } from 'lucide-react'
+import { SearchIcon, CloseIcon } from './CustomIcons'
 import '../styles/SearchBar.css'
 
 function SearchBar({ movies, onMovieSelect }) {
@@ -10,6 +10,21 @@ function SearchBar({ movies, onMovieSelect }) {
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const searchRef = useRef(null)
   const inputRef = useRef(null)
+
+  const getYouTubeThumbnail = (url) => {
+    if (!url) return null
+
+    // Extract video ID from various YouTube URL formats
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
+    const match = url.match(regExp)
+
+    if (match && match[2].length === 11) {
+      const videoId = match[2]
+      return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+    }
+
+    return null
+  }
 
   // Configure Fuse.js for fuzzy searching
   const fuse = new Fuse(movies, {
@@ -135,7 +150,7 @@ function SearchBar({ movies, onMovieSelect }) {
   return (
     <div className="search-bar" ref={searchRef}>
       <div className="search-input-wrapper">
-        <Search className="search-icon" size={20} />
+        <SearchIcon className="search-icon" size={20} />
         <input
           ref={inputRef}
           type="text"
@@ -152,7 +167,7 @@ function SearchBar({ movies, onMovieSelect }) {
             onClick={handleClear}
             aria-label="Clear search"
           >
-            <X size={18} />
+            <CloseIcon size={18} />
           </button>
         )}
       </div>
@@ -172,16 +187,31 @@ function SearchBar({ movies, onMovieSelect }) {
                 onClick={() => handleSelect(movie)}
                 onMouseEnter={() => setSelectedIndex(index)}
               >
-                <div className="result-title">
-                  {highlightMatch(movie.title, query)}
-                </div>
-                <div className="result-meta">
-                  {movie.year && <span className="result-year">{movie.year}</span>}
-                  {movie.genres && movie.genres.length > 0 && (
-                    <span className="result-genres">
-                      {movie.genres.join(', ')}
-                    </span>
+                <div className="result-thumbnail">
+                  {getYouTubeThumbnail(movie.youtube_link || movie.trailer) ? (
+                    <img
+                      src={getYouTubeThumbnail(movie.youtube_link || movie.trailer)}
+                      alt={movie.title}
+                      className="thumbnail-image"
+                    />
+                  ) : (
+                    <div className="thumbnail-placeholder">
+                      🎬
+                    </div>
                   )}
+                </div>
+                <div className="result-content">
+                  <div className="result-title">
+                    {highlightMatch(movie.title, query)}
+                  </div>
+                  <div className="result-meta">
+                    {movie.year && <span className="result-year">{movie.year}</span>}
+                    {movie.genres && movie.genres.length > 0 && (
+                      <span className="result-genres">
+                        {movie.genres.join(', ')}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </li>
             ))}

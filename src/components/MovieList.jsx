@@ -65,24 +65,9 @@ function MovieList({ movies, selectedMovie, weights, onMovieSelect }) {
     <div className="movie-list">
       <div className="movie-list-header">
         <h3>Movies Similar to "{selectedMovie.title}"</h3>
-        <p>Live similarity scores based on your AI weight settings</p>
-        {loading && <span className="updating-indicator">Updating scores...</span>}
+        <p>Similarity scores based on your AI weight settings</p>
       </div>
 
-      <div className="similarity-legend">
-        <div className="legend-item">
-          <div className="legend-color narrative"></div>
-          <span>Narrative ({Math.round(weights.narrative * 100)}%)</span>
-        </div>
-        <div className="legend-item">
-          <div className="legend-color visual"></div>
-          <span>Visual ({Math.round(weights.visual * 100)}%)</span>
-        </div>
-        <div className="legend-item">
-          <div className="legend-color audio"></div>
-          <span>Audio ({Math.round(weights.audio * 100)}%)</span>
-        </div>
-      </div>
 
       <div className="movie-grid">
         {moviesWithScores.slice(0, 12).map(movie => (
@@ -94,32 +79,24 @@ function MovieList({ movies, selectedMovie, weights, onMovieSelect }) {
             />
 
             <div className="similarity-breakdown">
-              <div className="overall-score">
-                <span className="score-label">Overall Similarity</span>
-                <span className="score-value">{Math.round(movie.similarity * 100)}%</span>
-              </div>
-
               <div className="component-scores">
-                <div className="component-score">
+                <div className="component-score narrative">
                   <div
-                    className="score-bar narrative"
-                    style={{ width: `${movie.similarities.narrative * 100}%` }}
+                    className="score-bar"
+                    style={{ width: `${Math.max(movie.similarities.narrative * 100, 5)}%` }}
                   ></div>
-                  <span>{Math.round(movie.similarities.narrative * 100)}%</span>
                 </div>
-                <div className="component-score">
+                <div className="component-score visual">
                   <div
-                    className="score-bar visual"
-                    style={{ width: `${movie.similarities.visual * 100}%` }}
+                    className="score-bar"
+                    style={{ width: `${Math.max(movie.similarities.visual * 100, 5)}%` }}
                   ></div>
-                  <span>{Math.round(movie.similarities.visual * 100)}%</span>
                 </div>
-                <div className="component-score">
+                <div className="component-score audio">
                   <div
-                    className="score-bar audio"
-                    style={{ width: `${movie.similarities.audio * 100}%` }}
+                    className="score-bar"
+                    style={{ width: `${Math.max(movie.similarities.audio * 100, 5)}%` }}
                   ></div>
-                  <span>{Math.round(movie.similarities.audio * 100)}%</span>
                 </div>
               </div>
             </div>
