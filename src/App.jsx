@@ -2,7 +2,8 @@ import { useState, useEffect } from "react"
 import SearchBar from "./components/SearchBar"
 import MovieList from "./components/MovieList"
 import MovieDisplay from "./components/MovieDisplay"
-import { BrainIcon, EyeIcon, AudioIcon, PopcornIcon } from "./components/CustomIcons"
+import StarRating from "./components/StarRating"
+import { BrainIcon, EyeIcon, AudioIcon, GitHubIcon } from "./components/CustomIcons"
 import "./styles/App.css"
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
   })
   const [analysis, setAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   // Load movies from API
   useEffect(() => {
@@ -28,6 +30,21 @@ function App() {
       })
       .catch(err => console.error("Movie load error:", err))
   }, [])
+
+  // Mouse tracking for spotlight effect
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+
+    if (!analysisMode) {
+      document.addEventListener('mousemove', handleMouseMove)
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [analysisMode])
 
   const handleMovieSelect = async (movie) => {
     setSelectedMovie(movie)
@@ -85,16 +102,32 @@ function App() {
       {!analysisMode ? (
         // Stage 1: Centered search mode
         <div key="search-stage" className="search-stage">
+          <div
+            className="mouse-spotlight"
+            style={{
+              '--mouse-x': `${mousePosition.x}px`,
+              '--mouse-y': `${mousePosition.y}px`
+            }}
+          ></div>
           <main className="centered-search">
             <header className="app-header">
-              <h1>CineAI</h1>
+              <h1>Cool Movie Vectors</h1>
               <p className="subtitle">Discover movies with AI-powered similarity analysis</p>
             </header>
             <SearchBar movies={movies} onMovieSelect={handleMovieSelect} />
           </main>
+          <a
+            href="https://github.com/DemetriusChatterjee/IMDB2.0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="github-link"
+            aria-label="View source code on GitHub"
+          >
+            <GitHubIcon size={24} />
+          </a>
           <div className="popcorn-decorations">
-            <PopcornIcon className="popcorn-left" size={64} />
-            <PopcornIcon className="popcorn-right" size={64} />
+            <img src="/icons/popcorn.png" className="popcorn-left" alt="Popcorn" />
+            <img src="/icons/popcorn.png" className="popcorn-right" alt="Popcorn" />
           </div>
         </div>
       ) : (
@@ -126,6 +159,15 @@ function App() {
                       )}
                     </div>
                     <h3>{selectedMovie.title}</h3>
+                    {selectedMovie.imdb_rating && (
+                      <div className="movie-rating-preview">
+                        <StarRating
+                          rating={selectedMovie.imdb_rating}
+                          size={16}
+                          showNumber={true}
+                        />
+                      </div>
+                    )}
                     <div className="preview-actions">
                       <button
                         className="view-details-btn"
@@ -261,10 +303,6 @@ function App() {
               />
             </div>
           </main>
-          <div className="popcorn-decorations">
-            <PopcornIcon className="popcorn-left" size={48} />
-            <PopcornIcon className="popcorn-right" size={48} />
-          </div>
         </div>
       )}
 

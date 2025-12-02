@@ -11,6 +11,8 @@
   justify-content: center;
   align-items: center;
   animation: slideInFromBottom 0.6s ease-out;
+  position: relative;
+  overflow: hidden;
 }
 
 .centered-search {
@@ -93,21 +95,135 @@
 .popcorn-right {
   position: absolute;
   bottom: 2rem;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
+  width: 200px;
+  height: 200px;
+  opacity: 0.9;
+  /* Ensure natural image colors show through */
+  filter: none;
 }
 
 .popcorn-left {
   left: 2rem;
   transform: rotate(15deg);
-  animation: floatLeft 4s ease-in-out infinite;
 }
 
 .popcorn-right {
   right: 2rem;
   transform: rotate(-15deg);
-  animation: floatRight 4s ease-in-out infinite 2s;
 }
+
+/* Mouse Spotlight */
+.mouse-spotlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 30%,
+    transparent 60%
+  );
+  transition: background 0.1s ease-out;
+}
+
+/* Star Rating Component */
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: Arial, sans-serif;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.star {
+  color: #ddd;
+  font-size: inherit;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.star.full {
+  color: #f39c12;
+}
+
+.star.half {
+  background: linear-gradient(90deg, #f39c12 50%, #ddd 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.star.empty {
+  color: #ddd;
+}
+
+.rating-number {
+  font-size: 0.8em;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-left: 0.25rem;
+}
+
+.movie-rating-preview {
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.movie-rating {
+  display: flex;
+  align-items: center;
+}
+
+/* GitHub Link */
+.github-link {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.github-link:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.analysis-header {
+  position: relative;
+}
+
+.analysis-header .github-link {
+  position: absolute;
+  top: 50%;
+  right: 2rem;
+  transform: translateY(-50%);
+}
+
+/* Theater Decorations */
+
+
 
 /* Animation keyframes */
 @keyframes floatLeft {
@@ -699,12 +815,19 @@
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .app-header h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .centered-search {
-    max-width: 90%;
-    margin-top: -5vh;
+    max-width: 95%;
+    margin-top: -3vh;
+    padding: 0 1rem;
   }
 
   .analysis-main {
@@ -726,11 +849,13 @@
   }
 
   .left-panel {
-    order: 2;
+    order: 1;
+    width: 100%;
+    min-height: auto;
   }
 
   .right-panel {
-    order: 1;
+    order: 2;
   }
 
   .movie-grid {
@@ -750,16 +875,42 @@
     max-height: 300px;
   }
 
-  .popcorn-left,
-  .popcorn-right {
-    bottom: 1rem;
+  .movie-preview-card {
+    padding: 1rem;
   }
 
-  .popcorn-left {
-    left: 1rem;
+  .movie-thumbnail {
+    aspect-ratio: 16/9;
+    margin-bottom: 0.75rem;
   }
 
-  .popcorn-right {
+  /* Hide decorative elements on mobile for better performance */
+  .popcorn-decorations,
+  .theater-lights {
+    display: none;
+  }
+
+  /* GitHub link mobile adjustments */
+  .github-link {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 40px;
+    height: 40px;
+    padding: 0.3rem;
+  }
+
+  .analysis-header .github-link {
     right: 1rem;
+  }
+
+  /* Better mobile spacing */
+  .app-header {
+    padding: 2rem 1rem 1rem;
+  }
+
+  /* Improved touch targets */
+  button {
+    min-height: 44px;
+    min-width: 44px;
   }
 }

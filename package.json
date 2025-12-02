@@ -1,13 +1,14 @@
 {
-  "name": "movie-recommender-ui",
+  "name": "cool-movie-vectors",
   "version": "1.0.0",
-  "description": "Trailer-based movie recommender UI with fuzzy search and tagging",
+  "description": "Cool Movie Vectors - AI-powered movie recommender with vector similarity",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "backend": "python backend_api.py"
+    "backend": "python backend_api.py",
+    "vercel-build": "vite build"
   },
   "dependencies": {
     "fuse.js": "^7.0.0",

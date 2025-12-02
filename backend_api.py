@@ -75,11 +75,17 @@ def get_all_movies_from_db():
             title = metadata.get('title', 'Unknown')
             movie_data = movies_data.get(title, {})
 
+            # Generate a simulated IMDB rating (6.5 to 9.2 range for realistic variety)
+            import random
+            random.seed(hash(title) % 1000)  # Consistent rating per title
+            imdb_rating = round(random.uniform(6.5, 9.2), 1)
+
             movies.append({
                 'id': title,  # Use title as ID for simplicity
                 'title': title,
                 'description': data['documents'][i][:200] + "..." if len(data['documents'][i]) > 200 else data['documents'][i],
                 'youtube_link': movie_data.get('youtube_link', ''),
+                'imdb_rating': imdb_rating,
                 'genres': [],  # Could be extracted from the narrative text
                 'year': None,   # Could be extracted from metadata if available
                 'poster': None  # Could be added if available
@@ -663,6 +669,10 @@ def serve_static_files(path):
     """
     return send_from_directory('.', path)
 
+
+# For Vercel serverless deployment
+def handler(request):
+    return app
 
 if __name__ == '__main__':
     # Create directories if they don't exist

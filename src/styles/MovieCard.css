@@ -257,6 +257,21 @@
   margin-bottom: 1rem;
   font-size: 0.9rem;
   animation: fadeIn 0.2s ease;
+  white-space: pre-line;
+}
+
+.movie-description br {
+  margin-bottom: 0.5rem;
+}
+
+/* Style the emojis and section headers in descriptions */
+.movie-description {
+  text-align: left;
+}
+
+.movie-description strong {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 @keyframes fadeIn {
@@ -284,19 +299,56 @@
 }
 
 @media (max-width: 768px) {
+  .movie-card {
+    transform: scale(0.9);
+    margin-bottom: -1rem;
+  }
+
   .movie-card-content {
-    padding: 1rem;
+    padding: 0.8rem;
   }
 
   .movie-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+
+  .movie-meta {
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .genre-pills {
+    margin-bottom: 0.5rem;
+  }
+
+  .genre-pill {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
   }
 
   .similarity-badge {
-    padding: 0.4rem 0.6rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
   }
 
   .similarity-score {
-    font-size: 1.2rem;
+    font-size: 1rem;
+  }
+
+  .similarity-label {
+    font-size: 0.7rem;
+  }
+
+  .movie-detail {
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .movie-description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
   }
 }

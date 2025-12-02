@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Play, Pause, Info } from 'lucide-react'
 import TagDisplay from './TagDisplay'
+import StarRating from './StarRating'
+import { formatGeminiAnalysis } from '../utils/textFormatting'
 import '../styles/MovieCard.css'
 
 // Function to extract YouTube video ID and generate thumbnail URL
@@ -119,8 +121,14 @@ function MovieCard({ movie, isSelected = false, onSelect }) {
           {movie.runtime && movie.runtime !== 'N/A' && (
             <span className="movie-runtime">{movie.runtime}</span>
           )}
-          {movie.imdbRating && movie.imdbRating !== 'N/A' && (
-            <span className="movie-rating">⭐ {movie.imdbRating}</span>
+          {(movie.imdb_rating || movie.imdbRating) && (movie.imdb_rating !== 'N/A' && movie.imdbRating !== 'N/A') && (
+            <div className="movie-rating">
+              <StarRating
+                rating={movie.imdb_rating || movie.imdbRating}
+                size={14}
+                showNumber={true}
+              />
+            </div>
           )}
         </div>
 
@@ -159,7 +167,12 @@ function MovieCard({ movie, isSelected = false, onSelect }) {
         )}
 
         {showInfo && movie.description && (
-          <p className="movie-description">{movie.description}</p>
+          <div
+            className="movie-description"
+            dangerouslySetInnerHTML={{
+              __html: formatGeminiAnalysis(movie.description)
+            }}
+          />
         )}
 
         {movie.tags && movie.tags.length > 0 && (

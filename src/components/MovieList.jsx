@@ -64,8 +64,7 @@ function MovieList({ movies, selectedMovie, weights, onMovieSelect }) {
   return (
     <div className="movie-list">
       <div className="movie-list-header">
-        <h3>Movies Similar to "{selectedMovie.title}"</h3>
-        <p>Similarity scores based on your AI weight settings</p>
+        <h3>Movies Similar to "{selectedMovie.title.split(' ').length > 7 ? selectedMovie.title.split(' ').slice(0, 7).join(' ') + '...' : selectedMovie.title}"</h3>
         <h4 className="settings-label"></h4>
       </div>
 
