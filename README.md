@@ -128,9 +128,13 @@ Health check endpoint
 
 ## Adding New Movies
 
-1. Add the trailer video file to `trailers/` directory
-2. (Optional) Add a thumbnail to `thumbnails/` directory
-3. Update the movies database in `backend_api.py`:
+1. Add the trailer video file (.mp4) to the trailers/ directory.
+2. Update movie_trailers.csv with the Title and YouTube Link.
+3. Run the Update Script (or the pipeline notebook). The system will:
+   - Detect the new file.
+   - Send it to Gemini for narrative extraction.
+   - Process visuals and audio locally.
+   - Add it to the ChromaDB trailer_db folder without re-processing existing movies.
 
 ```python
 {
@@ -149,11 +153,15 @@ Health check endpoint
 
 ### Backend
 - **Flask**: Web framework
+- **ChromaDB**: Vector Database
+- **Google Gemini 2.5 Flash**: google-generativeai to analyze videos
 - **PyTorch**: Deep learning framework
 - **Transformers (Hugging Face)**: CLIP model
 - **OpenCV**: Video processing
 - **scikit-learn**: Similarity calculations
 - **Flask-CORS**: Cross-origin resource sharing
+- **librosa**: DSP Analysis
+- **moviepy**: Decoding
 
 ### Frontend
 - **React 18**: UI framework
